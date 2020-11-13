@@ -5,15 +5,14 @@ import store from './store';
 
 import GlobalStyle from './styles/global';
 import theme from './styles/theme/main';
+import Register from './containers/Register';
 
 function App() {
   return (
     <Provider store={store}>
       <ThemeProvider theme={theme}>
         <GlobalStyle />
-        <header className="App-header">
-          <h1>HOme</h1>
-        </header>
+        <Register />
       </ThemeProvider>
     </Provider>
   );

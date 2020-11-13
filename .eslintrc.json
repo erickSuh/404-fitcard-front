@@ -30,17 +30,16 @@
   },
   "plugins": ["react", "react-hooks", "@typescript-eslint", "prettier"],
   "rules": {
-    "no-use-before-define": "off",
     "prettier/prettier": "error",
+    "react/prop-types": "off",
     "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn",
     "react/jsx-filename-extension": [
       1,
       {
         "extensions": [".tsx"]
       }
     ],
-    "import/prefer-default-export": "off",
+    "react/jsx-props-no-spreading": "off",
     "import/extensions": [
       "error",
       "ignorePackages",
@@ -49,8 +48,30 @@
         "tsx": "never"
       }
     ],
-    "@typescript-eslint/explicit-module-boundary-types": [
-      "off"
+    "comma-dangle": ["error", "only-multiline"],
+    "class-methods-use-this": [0],
+    "react/destructuring-assignment": [0],
+    "prefer-destructuring": [0],
+    "jsx-a11y/label-has-associated-control": [0],
+    "jsx-a11y/label-has-for": [0],
+    "jsx-a11y/alt-text": [0],
+    "jsx-a11y/anchor-is-valid": [0],
+    "jsx-a11y/interactive-supports-focus": [0],
+    "jsx-a11y/no-static-element-interactions": [0],
+    "jsx-a11y/click-events-have-key-events": [0],
+    "linebreak-style": ["off"],
+    "global-require": "off",
+    "import/prefer-default-export": "off",
+    "no-unused-expressions": [
+      "error",
+      {
+        "allowTaggedTemplates": true
+      }
+    ],
+    "no-console": "warn",
+    "no-use-before-define": "off",
+    "@typescript-eslint/no-use-before-define": [
+      "error"
     ]
   }
 }
