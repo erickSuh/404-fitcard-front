@@ -13,10 +13,12 @@ const Input: React.FC<Params> = ({
   onChange,
   onBlur,
   onFocus,
+  maxLength,
+  isInvalid = false,
   ...props
 }) => {
   return (
-    <InputContainer htmlFor={id}>
+    <InputContainer htmlFor={id} isInvalid={isInvalid}>
       {label}
       <input
         id={id}
@@ -27,6 +29,7 @@ const Input: React.FC<Params> = ({
         onChange={onChange}
         onBlur={onBlur}
         onFocus={onFocus}
+        maxLength={maxLength}
         {...props}
       />
     </InputContainer>

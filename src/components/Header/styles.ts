@@ -8,7 +8,7 @@ export const HeaderContainer = styled.div`
   width: 100%;
   height: 4rem;
 
-  @media (min-width: 1024px) {
+  @media (min-width: ${(props) => props.theme.width.tablet}) {
     display: block;
     padding: 1.5rem 2rem;
     height: 7rem;

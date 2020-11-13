@@ -4,10 +4,6 @@
     "es2021": true
   },
   "settings": {
-    "import/extensions": [".js", ".jsx", ".ts", ".tsx"],
-    "import/parsers": {
-      "@typescript-eslint/parser": [".ts", ".tsx"]
-    },
     "import/resolver": {
       "typescript": {}
     }
@@ -28,7 +24,7 @@
     "ecmaVersion": 12,
     "sourceType": "module"
   },
-  "plugins": ["react", "react-hooks", "@typescript-eslint", "prettier"],
+  "plugins": ["react", "react-hooks", "@typescript-eslint", "prettier", "import"],
   "rules": {
     "prettier/prettier": "error",
     "react/prop-types": "off",
