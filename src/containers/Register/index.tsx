@@ -1,13 +1,14 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { debounce } from 'lodash';
 
-import Panel from '../../components/Panel';
-import Button from '../../components/Button';
-import Header from '../../components/Header';
-import Input from '../../components/Input';
+import Panel from 'components/Panel';
+import Button from 'components/Button';
+import Header from 'components/Header';
+import Input from 'components/Input';
+import { validateEmail, validateCnpj, validateAccount, validateAgency } from 'utils/validators';
+import { maskCnpj, maskPhone, maskAgency, maskAccount } from 'utils/masks';
+
 import { Container } from './styles';
-import { validateEmail, validateCnpj, validateAccount, validateAgency } from '../../utils/validators';
-import { maskCnpj, maskPhone, maskAgency, maskAccount } from '../../utils/masks';
 
 const Register: React.FC = () => {
   const [name, setName] = useState('');
