@@ -75,8 +75,15 @@ export const validateAgency = (agency: string) => {
   return re.test(String(agency).toLowerCase());
 };
 
-export const validateAccount = (agency: string) => {
-  if (!agency) return false;
+export const validateAccount = (account: string) => {
+  if (!account) return false;
   const re = /^(\d{2})\.(\d{3})-(\d)/;
-  return re.test(String(agency).toLowerCase());
+  return re.test(String(account).toLowerCase());
+};
+
+export const validatePhone = (phone: string) => {
+  if (!phone) return false;
+  const formatted = phone.replace(/\D/g, '');
+  const re = /^(\d{10,11})/;
+  return re.test(String(formatted).toLowerCase());
 };

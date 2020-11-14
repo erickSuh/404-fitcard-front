@@ -1,19 +1,19 @@
 import { Reducer } from 'redux';
-import { RepositoriesState, RepositoriesTypes } from './types';
+import { CategoriesState, CategoriesTypes } from './types';
 
-const INITIAL_STATE: RepositoriesState = {
+const INITIAL_STATE: CategoriesState = {
   data: [],
   error: false,
   loading: false,
 };
 
-const reducer: Reducer<RepositoriesState> = (state = INITIAL_STATE, action) => {
+const reducer: Reducer<CategoriesState> = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case RepositoriesTypes.LOAD_REQUEST:
+    case CategoriesTypes.LOAD_REQUEST:
       return { ...state, loading: true };
-    case RepositoriesTypes.LOAD_SUCCESS:
+    case CategoriesTypes.LOAD_SUCCESS:
       return { ...state, loading: false, data: action.payload.data };
-    case RepositoriesTypes.LOAD_FAILURE:
+    case CategoriesTypes.LOAD_FAILURE:
       return { ...state, loading: false, error: true, data: [] };
     default:
       return state;

@@ -9,9 +9,9 @@ export const maskCnpj = (cnpj: string) => {
   return formatted;
 };
 
-export const maskPhone = (tel: string) => {
-  if (!tel) return tel;
-  let formatted = tel.replace(/\D/g, '');
+export const maskPhone = (phone: string) => {
+  if (!phone) return phone;
+  let formatted = phone.replace(/\D/g, '');
   formatted = formatted.replace(/^(\d{2})(\d)/g, '($1) $2');
   formatted = formatted.replace(/(\d)(\d{4})$/, '$1-$2');
   return formatted;

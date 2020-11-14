@@ -36,7 +36,12 @@ export default createGlobalStyle`
   }
 
   select {
-    border: none;
+    border-radius: 0.5rem;
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 1rem rgba(0, 123, 200, .5);
+    }
   }
 
   button {
@@ -49,6 +54,7 @@ export default createGlobalStyle`
     &:focus {
       border: none;
       outline: none;
+      box-shadow: 0 0 1rem rgba(0, 123, 200, .5);
     }
 
     &:hover {
