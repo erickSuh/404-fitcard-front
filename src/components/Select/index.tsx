@@ -15,9 +15,16 @@ const Select: React.FC<Params> = ({ value, list = [], children, onChange, style 
     return null;
   }, [list]);
 
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    e.persist();
+    if (onChange) {
+      onChange(e);
+    }
+  };
+
   return (
     <Container style={style}>
-      <select placeholder="teste" value={value} onChange={onChange}>
+      <select placeholder="teste" value={value} onChange={handleChange}>
         {renderList()}
         {children}
       </select>

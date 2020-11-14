@@ -10,8 +10,12 @@ import Loading from 'components/Loading';
 import Select from 'components/Select';
 
 import { ApplicationState } from 'store';
-import { loadRequest } from 'store/ducks/categories/actions';
-import { Category } from 'store/ducks/categories/types';
+import { loadCategories } from 'store/categories/actions';
+import { loadStates } from 'store/states/actions';
+import { createCompanies } from 'store/companies/actions';
+import { Category } from 'store/categories/types';
+import { State } from 'store/states/types';
+import { Company } from 'store/companies/types';
 
 import { validateEmail, validateCnpj, validatePhone, validateAccount, validateAgency } from 'utils/validators';
 import { maskCnpj, maskPhone, maskAgency, maskAccount } from 'utils/masks';
@@ -20,8 +24,9 @@ import { Container } from './styles';
 
 const Register: React.FC = () => {
   const dispatch = useDispatch();
-  const { categories } = useSelector((state: ApplicationState) => ({
+  const { categories, states } = useSelector((state: ApplicationState) => ({
     categories: state.categories,
+    states: state.states,
   }));
 
   const [name, setName] = useState('');
@@ -42,7 +47,7 @@ const Register: React.FC = () => {
 
   const [city, setCity] = useState('');
 
-  const [state, setState] = useState('');
+  const [state, setState] = useState('-1');
 
   const [isValidAgency, setIsValidAgency] = useState(true);
   const [agency, setAgency] = useState('');
@@ -54,66 +59,101 @@ const Register: React.FC = () => {
 
   const [active, setActive] = useState(true);
 
+  const checkName = (st: string) => {
+    if (!st) {
+      setIsValidName(false);
+      return false;
+    }
+    setIsValidName(true);
+    return true;
+  };
+
   const debounceNameCheckIsValid = useCallback(
     debounce(async (st) => {
-      if (!st) {
-        setIsValidName(false);
-        return;
-      }
-      setIsValidName(true);
+      checkName(st);
     }, 1000),
-    [validateEmail, debounce],
+    [checkName],
   );
+
+  const checkEmail = (st: string) => {
+    if (!st) {
+      setIsValidEmail(true);
+      return true;
+    }
+    const isValid = validateEmail(st);
+    setIsValidEmail(isValid);
+    return isValid;
+  };
 
   const debounceEmailCheckIsValid = useCallback(
     debounce(async (st) => {
-      if (!st) {
-        setIsValidEmail(true);
-        return;
-      }
-      setIsValidEmail(validateEmail(st));
+      checkEmail(st);
     }, 1000),
-    [validateEmail, debounce],
+    [checkEmail],
   );
+
+  const checkCnpj = (st: string) => {
+    const isValid = validateCnpj(st);
+    setIsValidCnpj(isValid);
+    return isValid;
+  };
 
   const debounceCnpjCheckIsValid = useCallback(
     debounce(async (st) => {
-      setIsValidCnpj(validateCnpj(st));
+      checkCnpj(st);
     }, 1000),
     [validateCnpj, debounce],
   );
 
+  const checkPhone = useCallback((st: string, innerCategory: string) => {
+    if (innerCategory === process.env.REACT_APP_SUPERMARKET_ID || st) {
+      const isValid = validatePhone(st);
+      setIsValidPhone(isValid);
+      return isValid;
+    }
+    setIsValidPhone(true);
+    return true;
+  }, []);
+
   const debouncePhoneCheckIsValid = useCallback(
-    debounce(async (st) => {
-      if (category === process.env.REACT_APP_SUPERMARKET_ID) {
-        setIsValidPhone(validatePhone(st));
-        return;
-      }
-      setIsValidPhone(true);
+    debounce(async (st, innerCategory) => {
+      checkPhone(st, innerCategory);
     }, 1000),
-    [validateAccount, debounce],
+    [checkPhone],
   );
+
+  const checkAccount = (st: string) => {
+    if (!st) {
+      setIsValidAccount(true);
+      return true;
+    }
+    const isValid = validateAccount(st);
+    setIsValidAccount(isValid);
+    return isValid;
+  };
 
   const debounceAccountCheckIsValid = useCallback(
     debounce(async (st) => {
-      if (!st) {
-        setIsValidAccount(true);
-        return;
-      }
-      setIsValidAccount(validateAccount(st));
+      checkAccount(st);
     }, 1000),
-    [validateAccount, debounce],
+    [checkAccount],
   );
+
+  const checkAgency = (st: string) => {
+    if (!st) {
+      setIsValidAgency(true);
+      return true;
+    }
+    const isValid = validateAgency(st);
+    setIsValidAgency(isValid);
+    return isValid;
+  };
 
   const debounceAgencyCheckIsValid = useCallback(
     debounce(async (st) => {
-      if (!st) {
-        setIsValidAgency(true);
-        return;
-      }
-      setIsValidAgency(validateAgency(st));
+      checkAgency(st);
     }, 1000),
-    [validateAgency, debounce],
+    [checkAgency],
   );
 
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -144,7 +184,7 @@ const Register: React.FC = () => {
         break;
       case 'inp_phone':
         setPhone(maskPhone(e.target.value));
-        debouncePhoneCheckIsValid(maskPhone(e.target.value));
+        debouncePhoneCheckIsValid(maskPhone(e.target.value), category);
         break;
       case 'inp_agency':
         setAgency(maskAgency(e.target.value));
@@ -162,12 +202,55 @@ const Register: React.FC = () => {
   }, []);
 
   const handleChangeCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    e.persist();
     setCategory(e.target.value);
-    debouncePhoneCheckIsValid(phone);
+    debouncePhoneCheckIsValid(phone, e.target.value);
+  };
+
+  const handleChangeState = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setState(e.target.value);
+  };
+
+  const handleSendForm = () => {
+    if (
+      !(
+        checkName(name) &&
+        checkCnpj(cnpj) &&
+        checkEmail(email) &&
+        checkPhone(phone, category) &&
+        checkAgency(agency) &&
+        checkAccount(account)
+      )
+    ) {
+      alert('Falta info ai mermao');
+      return;
+    }
+    const arrPhone = phone.split(')');
+    const ddd = arrPhone[0].replace(/\D/g, '');
+    const numbersPhone = arrPhone[1].replace(/\D/g, '');
+
+    const company: Company = {
+      name,
+      fantasyName,
+      cnpj: cnpj.replace(/\D/g, ''),
+      email,
+      address,
+      city,
+      state: Number.parseInt(state, 10),
+      ddd,
+      phone: numbersPhone,
+      categoryId: Number.parseInt(category, 10),
+      active,
+      agency,
+      account,
+    };
+
+    dispatch(createCompanies(company));
   };
 
   useEffect(() => {
-    dispatch(loadRequest());
+    dispatch(loadCategories());
+    dispatch(loadStates());
   }, [dispatch]);
 
   const categoriesList = useMemo(() => {
@@ -179,12 +262,22 @@ const Register: React.FC = () => {
     return [{ key: '-1', value: '-1', label: 'Selecione um' }, ...lst];
   }, [categories, categories.data]);
 
+  const statesList = useMemo(() => {
+    const lst = states.data.map((cat: State) => ({
+      key: cat.id.toString(),
+      value: cat.id.toString(),
+      label: cat.name,
+    }));
+    return [{ key: '-1', value: '-1', label: 'Selecione um' }, ...lst];
+    return [];
+  }, [states, states.data]);
+
   return (
     <>
       <Header />
       <Container>
         <Panel>
-          <Loading isLoading={categories.loading}>
+          <Loading isLoading={categories.loading || categories.loading}>
             <Input
               id="inp_name"
               type="text"
@@ -199,7 +292,7 @@ const Register: React.FC = () => {
               type="text"
               label="Nome Fantasia:"
               maxLength={100}
-              value={email}
+              value={fantasyName}
               onChange={handleChange}
             />
             <Input
@@ -228,7 +321,7 @@ const Register: React.FC = () => {
               onChange={handleChange}
             />
             <Input id="inp_city" type="text" label="Cidade:" maxLength={100} value={city} onChange={handleChange} />
-            <Input id="inp_state" type="text" label="Estado:" maxLength={100} value={state} onChange={handleChange} />
+            <Select onChange={handleChangeState} list={statesList} value={state} />
             <Input
               id="inp_phone"
               type="text"
@@ -261,12 +354,7 @@ const Register: React.FC = () => {
               Ativo
               <input id="chk_active" type="checkbox" onChange={handleChange} />
             </label>
-            <Button
-              label="Enviar"
-              onClick={() => {
-                console.log('------enviar-----');
-              }}
-            />
+            <Button label="Enviar" onClick={handleSendForm} />
           </Loading>
         </Panel>
       </Container>
