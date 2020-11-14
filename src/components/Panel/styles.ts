@@ -5,6 +5,7 @@ export const PanelContainer = styled.div`
   border-radius: 1rem;
   width: 100%;
   background-color: ${(props) => props.theme.colors.secondary};
+  overflow: auto;
 
   @media (min-width: ${(props) => props.theme.width.tablet}) {
     padding: 4rem;
