@@ -64,7 +64,6 @@ export const validateCnpj = (cnpj: string) => {
 
     return true;
   } catch (e) {
-    console.log('error: ', e);
     return false;
   }
 };
