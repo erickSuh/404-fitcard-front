@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
 import { debounce } from 'lodash';
 import { useToasts } from 'react-toast-notifications';
+import moment from 'moment';
 
 import Panel from 'components/Panel';
 import Button from 'components/Button';
@@ -15,6 +16,8 @@ import Checkbox from 'components/Checkbox';
 import { loadCategories } from 'store/categories/actions';
 import { loadStates } from 'store/states/actions';
 import { createCompany, loadCompany, updateCompany, deleteCompany } from 'store/companies/actions';
+
+import { loadReset } from 'store/companies/actionTypes';
 
 import { ApplicationState } from 'store';
 import { Category } from 'store/categories/types';
@@ -284,6 +287,21 @@ const Register: React.FC = () => {
   };
 
   useEffect(() => {
+    dispatch(loadReset());
+    setName('');
+    setFantasyName('');
+    setCnpj('');
+    setEmail('');
+    setAddress('');
+    setCity('');
+    setState('');
+    setPhone('');
+    setCategory('');
+    setActive(true);
+    setAgency('');
+    setAccount('');
+    setCreatedDate(new Date());
+    setUpdatedDate(new Date());
     if (id) {
       dispatch(loadCompany(id));
     }
@@ -432,7 +450,7 @@ const Register: React.FC = () => {
                 id="inp_created_date"
                 type="text"
                 label="Data de criação:"
-                value={createdDate.toString()}
+                value={moment(createdDate).format('DD-MM-yyyy hh:mm:ss')}
                 disabled
               />
             )}
@@ -441,7 +459,7 @@ const Register: React.FC = () => {
                 id="inp_updated_date"
                 type="text"
                 label="Data de atualização:"
-                value={updatedDate.toString()}
+                value={moment(updatedDate).format('DD-MM-yyyy hh:mm:ss')}
                 disabled
               />
             )}
