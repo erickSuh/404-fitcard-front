@@ -264,7 +264,11 @@ const Register: React.FC = () => {
     };
 
     if (!id) {
-      dispatch(createCompany(company));
+      dispatch(
+        createCompany(company, () => {
+          history.push('/');
+        }),
+      );
       return;
     }
     dispatch(
