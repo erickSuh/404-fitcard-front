@@ -8,6 +8,7 @@ import Table from 'components/Table';
 import Loading from 'components/Loading';
 
 import { loadCompanies } from 'store/companies/actions';
+import { Company } from 'store/companies/types';
 import { ApplicationState } from 'store';
 
 import { Container } from './styles';
@@ -30,14 +31,19 @@ const Home: React.FC = () => {
 
   const listCompanies = useMemo(() => {
     if (!companies.data) return [];
-    return companies.data;
+    const newList = companies.data.map((comp: Company) => ({
+      ...comp,
+      stateAbbreviation: comp.stateAssociation?.abbreviation,
+      categoryName: comp.categoryAssociation?.name,
+    }));
+    return newList;
   }, [companies.data]);
 
   return (
     <>
       <Header />
       <Container>
-        <Panel>
+        <Panel head="lista de empresas">
           <Loading isLoading={companies.loading}>
             <Table headers={HEADERS} list={listCompanies} onClick={handleClickItem} />
           </Loading>

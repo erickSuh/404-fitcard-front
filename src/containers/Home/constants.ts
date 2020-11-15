@@ -20,7 +20,7 @@ export const HEADERS = [
     label: 'Agencia',
   },
   {
-    key: 'categoryId',
+    key: 'categoryName',
     label: 'Categoria',
   },
   {
@@ -52,7 +52,7 @@ export const HEADERS = [
     label: 'Razão Social',
   },
   {
-    key: 'state',
+    key: 'stateAbbreviation',
     label: 'Estado',
   },
   {

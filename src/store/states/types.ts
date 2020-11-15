@@ -8,6 +8,7 @@ export enum StatesTypes {
 export interface State {
   id: number;
   name: string;
+  abbreviation: string;
   createdAt: string;
   updateAt: string;
 }
