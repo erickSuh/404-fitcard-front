@@ -353,7 +353,7 @@ const Register: React.FC = () => {
     <>
       <Header />
       <Container>
-        <Panel>
+        <Panel head={id ? 'atualizar cadastro' : 'novo cadastro'}>
           <Loading isLoading={categories.loading || categories.loading}>
             <Input
               id="inp_name"

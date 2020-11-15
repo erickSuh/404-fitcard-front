@@ -9,9 +9,22 @@ export const HeaderContainer = styled.div`
   height: 4rem;
 
   @media (min-width: ${(props) => props.theme.width.tablet}) {
-    display: block;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
     padding: 1.5rem 2rem;
     height: 7rem;
+  }
+
+  a {
+    margin-left: 2rem;
+    text-decoration: none;
+    font-size: 1.5rem;
+    font-weight: bolder;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 `;
 

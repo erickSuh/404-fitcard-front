@@ -1,4 +1,8 @@
 /* eslint-disable no-shadow */
+
+import { State } from '../states/types';
+import { Category } from '../categories/types';
+
 export enum CompaniesTypes {
   LOAD_REQUEST = 'companies/LOAD_REQUEST',
   LOAD_SUCCESS = 'companies/LOAD_SUCCESS',
@@ -28,6 +32,10 @@ export interface Company {
   categoryId?: number;
   updateAt?: Date;
   createdAt?: Date;
+  stateAssociation?: State;
+  categoryAssociation?: Category;
+  stateAbbreviation?: string;
+  categoryName?: string;
 }
 
 export interface CompaniesState {

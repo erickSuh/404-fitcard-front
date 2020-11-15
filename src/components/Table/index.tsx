@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useMemo } from 'react';
 
 import { Container } from './styles';
@@ -18,7 +19,7 @@ const Table: React.FC<Params> = ({ headers = [], list = [], onClick, style, chil
   const lblHeaders = useMemo(() => headers.map((header: TableHeader) => header.label), [headers]);
 
   return (
-    <Container headers={lblHeaders}>
+    <Container headers={lblHeaders} style={style}>
       <table>
         <thead>
           <tr>
@@ -37,6 +38,7 @@ const Table: React.FC<Params> = ({ headers = [], list = [], onClick, style, chil
           ))}
         </tbody>
       </table>
+      {children}
     </Container>
   );
 };
