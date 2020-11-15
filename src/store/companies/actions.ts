@@ -32,14 +32,16 @@ export const loadCompanies = () => async (dispatch: Dispatch) => {
   return dispatch(loadSuccess(response.data));
 };
 
-export const createCompany = (company: Company) => async (dispatch: Dispatch) => {
+export const createCompany = (company: Company, onSuccess?: () => void) => async (dispatch: Dispatch) => {
   dispatch(createRequest());
   const response = await api.post('/companies', company);
 
   if (response.status !== 200) {
     return dispatch(createFailure());
   }
-  return dispatch(createSuccess(response.data));
+  dispatch(createSuccess(response.data));
+  onSuccess();
+  return true;
 };
 
 export const updateCompany = (company: Company, id: string, onSuccess?: () => void) => async (dispatch: Dispatch) => {
