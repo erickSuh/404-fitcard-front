@@ -40,7 +40,7 @@ export const createCompany = (company: Company, onSuccess?: () => void) => async
     return dispatch(createFailure());
   }
   dispatch(createSuccess(response.data));
-  onSuccess();
+  if (onSuccess) onSuccess();
   return true;
 };
 
