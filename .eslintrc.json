@@ -1,9 +1,10 @@
 {
   "env": {
     "browser": true,
-    "es2021": true
+    "es2020": true
   },
   "settings": {
+    "react": { "version": "detect" },
     "import/extensions": [".js", ".jsx", ".ts", ".tsx"],
     "import/parsers": {
       "@typescript-eslint/parser": [".ts", ".tsx"]
@@ -14,33 +15,31 @@
   },
   "extends": [
     "airbnb",
-    "prettier",
-    "prettier/@typescript-eslint",
-    "plugin:prettier/recommended",
+    "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended",
-    "plugin:react/recommended"
+    "prettier/@typescript-eslint",
+    "plugin:prettier/recommended"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
     },
-    "ecmaVersion": 12,
+    "ecmaVersion": 2020,
     "sourceType": "module"
   },
-  "plugins": ["react", "react-hooks", "@typescript-eslint", "prettier"],
+  "plugins": ["react", "react-hooks", "@typescript-eslint", "prettier", "import"],
   "rules": {
-    "no-use-before-define": "off",
     "prettier/prettier": "error",
+    "react/prop-types": "off",
     "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn",
     "react/jsx-filename-extension": [
       1,
       {
-        "extensions": [".tsx"]
+        "extensions": [".tsx", ".jsx"]
       }
     ],
-    "import/prefer-default-export": "off",
+    "react/jsx-props-no-spreading": "off",
     "import/extensions": [
       "error",
       "ignorePackages",
@@ -49,8 +48,29 @@
         "tsx": "never"
       }
     ],
-    "@typescript-eslint/explicit-module-boundary-types": [
-      "off"
-    ]
+    "comma-dangle": ["error", "only-multiline"],
+    "class-methods-use-this": [0],
+    "react/destructuring-assignment": [0],
+    "prefer-destructuring": [0],
+    "jsx-a11y/label-has-associated-control": [0],
+    "jsx-a11y/label-has-for": [0],
+    "jsx-a11y/alt-text": [0],
+    "jsx-a11y/anchor-is-valid": [0],
+    "jsx-a11y/interactive-supports-focus": [0],
+    "jsx-a11y/no-static-element-interactions": [0],
+    "jsx-a11y/click-events-have-key-events": [0],
+    "linebreak-style": ["off"],
+    "@typescript-eslint/explicit-module-boundary-types": 0,
+    "global-require": "off",
+    "import/prefer-default-export": "off",
+    "no-unused-expressions": [
+      "error",
+      {
+        "allowTaggedTemplates": true
+      }
+    ],
+    "no-console": "warn",
+    "no-use-before-define": [0],
+    "@typescript-eslint/no-use-before-define": [1]
   }
 }

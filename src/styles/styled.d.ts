@@ -6,6 +6,8 @@ declare module 'styled-components' {
       header: string;
       primary: string;
       secondary: string;
+      hover: string;
+      text: string;
       invalid: string;
       background: string;
     };
@@ -13,6 +15,10 @@ declare module 'styled-components' {
       fontFamily: string;
       fontStyle: string;
       fontWeight: string;
+    };
+    width: {
+      tablet: string;
+      desktop: string;
     };
   }
 }

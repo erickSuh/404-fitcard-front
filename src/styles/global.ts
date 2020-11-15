@@ -3,7 +3,7 @@ import { createGlobalStyle } from 'styled-components';
 export default createGlobalStyle`
   * {
     font-family: ${(props) => props.theme.fonts.fontFamily};
-    color: ${(props) => props.theme.colors.primary};
+    color: ${(props) => props.theme.colors.text};
     margin: 0;
     padding: 0;
     background: transparent;
@@ -36,10 +36,52 @@ export default createGlobalStyle`
   }
 
   select {
+    border-radius: 0.5rem;
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 1rem rgba(0, 123, 200, .5);
+    }
+  }
+
+  button {
     border: none;
+    color: ${(props) => props.theme.colors.secondary};
+    background-color: ${(props) => props.theme.colors.primary};
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+
+    &:focus {
+      border: none;
+      outline: none;
+      box-shadow: 0 0 1rem rgba(0, 123, 200, .5);
+    }
+
+    &:hover {
+      transition: background-color 1s;
+      background-color: ${(props) => props.theme.colors.hover};
+      cursor: pointer;
+    }
+  }
+
+  input {
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    border: 2px solid rgba(0, 0, 0, .25);
+    font-size: 16px;
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 1rem rgba(0, 123, 200, .5);
+    }
+
+    &:disabled {
+      background-color: lightgray;
+    }
   }
   
   body {
+    display: block;
     color: ${(props) => props.theme.colors.primary};
     background: #f7f3f7;
   }
