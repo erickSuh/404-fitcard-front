@@ -1,7 +1,8 @@
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
 import { Provider } from 'react-redux';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
+import { ToastProvider } from 'react-toast-notifications';
 import store from './store';
 
 import GlobalStyle from './styles/global';
@@ -12,15 +13,19 @@ import Register from './containers/Register';
 function App() {
   return (
     <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <GlobalStyle />
-        <Router>
-          <Switch>
-            <Route path="/" exact component={Home} />
-            <Route path="/cadastro" exact component={Register} />
-          </Switch>
-        </Router>
-      </ThemeProvider>
+      <ToastProvider>
+        <ThemeProvider theme={theme}>
+          <GlobalStyle />
+          <Router>
+            <Switch>
+              <Route path="/" exact component={Home} />
+              <Route path="/cadastro" exact component={Register} />
+              <Route path="/cadastro/:id" exact component={Register} />
+              <Redirect to="/" />
+            </Switch>
+          </Router>
+        </ThemeProvider>
+      </ToastProvider>
     </Provider>
   );
 }

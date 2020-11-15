@@ -1,7 +1,8 @@
 import api from 'services/api';
+import { Dispatch } from 'redux';
 import { loadRequest, loadSuccess, loadFailure } from './actionTypes';
 
-export const loadStates = () => async (dispatch: any) => {
+export const loadStates = () => async (dispatch: Dispatch) => {
   dispatch(loadRequest());
   const response = await api.get('/states');
 

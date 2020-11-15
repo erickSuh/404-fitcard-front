@@ -11,4 +11,5 @@ export default interface Params {
   style?: React.CSSProperties;
   maxLength?: number;
   isInvalid?: boolean;
+  disabled?: boolean;
 }

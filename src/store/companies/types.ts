@@ -3,6 +3,9 @@ export enum CompaniesTypes {
   LOAD_REQUEST = 'companies/LOAD_REQUEST',
   LOAD_SUCCESS = 'companies/LOAD_SUCCESS',
   LOAD_FAILURE = 'companies/LOAD_FAILURE',
+  LOAD_RESET = 'companies/LOAD_RESET',
+  LOAD_COMPANY_SUCCESS = 'companies/LOAD_COMPANY_SUCCESS',
+  LOAD_COMPANY_FAILURE = 'companies/LOAD_COMPANY_FAILURE',
   CREATE_REQUEST = 'companies/CREATE_REQUEST',
   CREATE_SUCCESS = 'companies/CREATE_SUCCESS',
   CREATE_FAILURE = 'companies/CREATE_FAILURE',
@@ -29,6 +32,7 @@ export interface Company {
 
 export interface CompaniesState {
   readonly data: Company[];
+  readonly company?: Company;
   readonly loading: boolean;
   readonly error: boolean;
 }

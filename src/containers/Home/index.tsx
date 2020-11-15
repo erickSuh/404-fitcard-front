@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom';
 import Header from 'components/Header';
 import Panel from 'components/Panel';
 import Table from 'components/Table';
+import Loading from 'components/Loading';
 
 import { loadCompanies } from 'store/companies/actions';
 import { ApplicationState } from 'store';
@@ -20,7 +21,7 @@ const Home: React.FC = () => {
   }));
 
   const handleClickItem = (e: React.MouseEvent<HTMLTableRowElement>) => {
-    history.push(`/companies/${e.currentTarget.id}`);
+    history.push(`/cadastro/${e.currentTarget.id}`);
   };
 
   useEffect(() => {
@@ -37,7 +38,9 @@ const Home: React.FC = () => {
       <Header />
       <Container>
         <Panel>
-          <Table headers={HEADERS} list={listCompanies} onClick={handleClickItem} />
+          <Loading isLoading={companies.loading}>
+            <Table headers={HEADERS} list={listCompanies} onClick={handleClickItem} />
+          </Loading>
         </Panel>
       </Container>
     </>

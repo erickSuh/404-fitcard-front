@@ -74,6 +74,10 @@ export default createGlobalStyle`
       outline: none;
       box-shadow: 0 0 1rem rgba(0, 123, 200, .5);
     }
+
+    &:disabled {
+      background-color: lightgray;
+    }
   }
   
   body {

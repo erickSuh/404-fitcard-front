@@ -1,6 +1,8 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useParams, useHistory } from 'react-router-dom';
 import { debounce } from 'lodash';
+import { useToasts } from 'react-toast-notifications';
 
 import Panel from 'components/Panel';
 import Button from 'components/Button';
@@ -9,10 +11,11 @@ import Input from 'components/Input';
 import Loading from 'components/Loading';
 import Select from 'components/Select';
 
-import { ApplicationState } from 'store';
 import { loadCategories } from 'store/categories/actions';
 import { loadStates } from 'store/states/actions';
-import { createCompanies } from 'store/companies/actions';
+import { createCompany, loadCompany, updateCompany, deleteCompany } from 'store/companies/actions';
+
+import { ApplicationState } from 'store';
 import { Category } from 'store/categories/types';
 import { State } from 'store/states/types';
 import { Company } from 'store/companies/types';
@@ -22,11 +25,19 @@ import { maskCnpj, maskPhone, maskAgency, maskAccount } from 'utils/masks';
 
 import { Container } from './styles';
 
+interface ParamTypes {
+  id?: string;
+}
+
 const Register: React.FC = () => {
+  const history = useHistory();
+  const { addToast } = useToasts();
   const dispatch = useDispatch();
-  const { categories, states } = useSelector((state: ApplicationState) => ({
+  const { id } = useParams<ParamTypes>();
+  const { categories, states, companies } = useSelector((state: ApplicationState) => ({
     categories: state.categories,
     states: state.states,
+    companies: state.companies,
   }));
 
   const [name, setName] = useState('');
@@ -58,6 +69,9 @@ const Register: React.FC = () => {
   const [category, setCategory] = useState('-1');
 
   const [active, setActive] = useState(true);
+
+  const [createdDate, setCreatedDate] = useState<Date>(new Date());
+  const [updatedDate, setUpdatedDate] = useState<Date>(new Date());
 
   const checkName = (st: string) => {
     if (!st) {
@@ -222,7 +236,7 @@ const Register: React.FC = () => {
         checkAccount(account)
       )
     ) {
-      alert('Falta info ai mermao');
+      addToast('Falta alguma informação, verifique e tente novamente', { appearance: 'error', autoDismiss: true });
       return;
     }
     const arrPhone = phone.split(')');
@@ -245,13 +259,75 @@ const Register: React.FC = () => {
       account,
     };
 
-    dispatch(createCompanies(company));
+    if (!id) {
+      dispatch(createCompany(company));
+      return;
+    }
+    dispatch(
+      updateCompany(company, id, () => {
+        history.push('/');
+      }),
+    );
+  };
+
+  const handleDelete = () => {
+    if (!id) {
+      addToast('Algo deu errado', { appearance: 'error', autoDismiss: true });
+      return;
+    }
+    dispatch(
+      deleteCompany(id, () => {
+        history.push('/');
+      }),
+    );
   };
 
   useEffect(() => {
+    if (id) {
+      dispatch(loadCompany(id));
+    }
     dispatch(loadCategories());
     dispatch(loadStates());
-  }, [dispatch]);
+  }, [dispatch, id]);
+
+  useEffect(() => {
+    if (!companies.company) {
+      return;
+    }
+
+    const {
+      name: iname,
+      fantasyName: ifantasyName,
+      cnpj: icnpj,
+      email: iemail,
+      address: iaddress,
+      city: icity,
+      state: istate,
+      ddd,
+      phone: iphone,
+      categoryId: icategory,
+      active: iactive,
+      agency: iagency,
+      account: iaccount,
+      createdAt,
+      updateAt,
+    } = companies.company;
+    if (iname) setName(iname);
+
+    if (ifantasyName) setFantasyName(ifantasyName);
+    if (icnpj) setCnpj(icnpj);
+    if (iemail) setEmail(iemail);
+    if (iaddress) setAddress(iaddress);
+    if (icity) setCity(icity);
+    if (istate) setState(istate.toString());
+    if (ddd && iphone) setPhone(maskPhone(ddd + iphone));
+    if (icategory) setCategory(icategory.toString());
+    if (iactive) setActive(iactive);
+    if (iagency) setAgency(iagency);
+    if (iaccount) setAccount(iaccount);
+    if (createdAt) setCreatedDate(createdAt);
+    if (updateAt) setUpdatedDate(updateAt);
+  }, [companies.company]);
 
   const categoriesList = useMemo(() => {
     const lst = categories.data.map((cat: Category) => ({
@@ -310,6 +386,7 @@ const Register: React.FC = () => {
               label="E-email:"
               isInvalid={!isValidEmail}
               maxLength={100}
+              value={email}
               onChange={handleChange}
             />
             <Input
@@ -349,12 +426,31 @@ const Register: React.FC = () => {
               value={account}
               onChange={handleChange}
             />
+            {id && (
+              <Input
+                id="inp_created_date"
+                type="text"
+                label="Data de criação:"
+                value={createdDate.toString()}
+                disabled
+              />
+            )}
+            {id && (
+              <Input
+                id="inp_updated_date"
+                type="text"
+                label="Data de atualização:"
+                value={updatedDate.toString()}
+                disabled
+              />
+            )}
             <Select onChange={handleChangeCategory} list={categoriesList} value={category} />
             <label htmlFor="chk_active">
+              <input id="chk_active" type="checkbox" onChange={handleChange} checked={active} />
               Ativo
-              <input id="chk_active" type="checkbox" onChange={handleChange} />
             </label>
             <Button label="Enviar" onClick={handleSendForm} />
+            <Button label="Deletar" onClick={handleDelete} />
           </Loading>
         </Panel>
       </Container>

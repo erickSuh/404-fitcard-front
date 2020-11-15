@@ -15,6 +15,7 @@ const Input: React.FC<Params> = ({
   onFocus,
   maxLength,
   isInvalid = false,
+  disabled,
   ...props
 }) => {
   return (
@@ -30,6 +31,7 @@ const Input: React.FC<Params> = ({
         onBlur={onBlur}
         onFocus={onFocus}
         maxLength={maxLength}
+        disabled={disabled}
         {...props}
       />
     </InputContainer>
