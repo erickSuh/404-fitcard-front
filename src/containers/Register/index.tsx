@@ -10,6 +10,7 @@ import Header from 'components/Header';
 import Input from 'components/Input';
 import Loading from 'components/Loading';
 import Select from 'components/Select';
+import Checkbox from 'components/Checkbox';
 
 import { loadCategories } from 'store/categories/actions';
 import { loadStates } from 'store/states/actions';
@@ -398,7 +399,7 @@ const Register: React.FC = () => {
               onChange={handleChange}
             />
             <Input id="inp_city" type="text" label="Cidade:" maxLength={100} value={city} onChange={handleChange} />
-            <Select onChange={handleChangeState} list={statesList} value={state} />
+            <Select id="sel_state" label="Estado" onChange={handleChangeState} list={statesList} value={state} />
             <Input
               id="inp_phone"
               type="text"
@@ -444,13 +445,16 @@ const Register: React.FC = () => {
                 disabled
               />
             )}
-            <Select onChange={handleChangeCategory} list={categoriesList} value={category} />
-            <label htmlFor="chk_active">
-              <input id="chk_active" type="checkbox" onChange={handleChange} checked={active} />
-              Ativo
-            </label>
-            <Button label="Enviar" onClick={handleSendForm} />
-            <Button label="Deletar" onClick={handleDelete} />
+            <Select
+              id="sel_category"
+              label="Categoria"
+              onChange={handleChangeCategory}
+              list={categoriesList}
+              value={category}
+            />
+            <Checkbox id="chk_active" onChange={handleChange} checked={active} label="Ativo" />
+            <Button label={id ? 'Atualizar' : 'Enviar'} onClick={handleSendForm} />
+            {id && <Button label="Deletar" onClick={handleDelete} />}
           </Loading>
         </Panel>
       </Container>

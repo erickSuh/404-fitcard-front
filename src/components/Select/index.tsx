@@ -3,7 +3,7 @@ import Params from './types';
 
 import { Container } from './styles';
 
-const Select: React.FC<Params> = ({ value, list = [], children, onChange, style }) => {
+const Select: React.FC<Params> = ({ id, label, value, list = [], children, onChange, style }) => {
   const renderList = useCallback(() => {
     if (list) {
       return list.map((item) => (
@@ -24,10 +24,13 @@ const Select: React.FC<Params> = ({ value, list = [], children, onChange, style 
 
   return (
     <Container style={style}>
-      <select placeholder="teste" value={value} onChange={handleChange}>
-        {renderList()}
-        {children}
-      </select>
+      <label id={id}>
+        {label}
+        <select placeholder="teste" value={value} onChange={handleChange}>
+          {renderList()}
+          {children}
+        </select>
+      </label>
     </Container>
   );
 };
